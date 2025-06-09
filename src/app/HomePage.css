@@ -1,0 +1,264 @@
+.HomePage-Container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: rgb(0, 50, 0);
+    flex-flow: column;
+    position: relative;
+}
+
+.HomePage-Main-Container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    /* transition: .4s; */
+}
+
+.HomePage-Main-Container.Hidden {
+    /* width: 0px;
+    display: none;
+    transform: translate(-100vw); */
+}
+
+.HomePage-Title-Container {
+    width: 95vw;
+    height: 84vh;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    color: var(--color-one);
+    background: rgb(0,50,0);
+    box-shadow: 2px 2px 5px rgb(0,0,0);
+    background: radial-gradient(circle, rgba(0,20,0,.9) 0%, rgba(0,50,0,.9) 100%);
+    font-family: monospace;
+    text-align: center;
+    font-size: large;
+    font-weight: bolder;
+}
+
+.HomePage-Main-BigTitle {
+	line-height: 12vw;
+	font-size: 14vw;
+    color: transparent;
+    font-family: system-ui;
+    font-weight: bolder;
+    width: min-content;
+    text-align: center;
+    -webkit-text-stroke: 1px var(--color-one);
+    text-shadow: -1px 0px 10px green;
+    user-select: none;
+}
+
+.HomePage-Main-BigWord {
+    display: inline-flex;
+}
+
+.HomePage-Main-BigAlphabet {
+    transition: color .5s ease-in;
+}
+
+.HomePage-Main-Description {
+    font-style: italic;
+    margin: 20px;
+    font-size: small;
+}
+
+.HomePage-Apps-Container {
+    position: absolute;
+    /* left: 0; */
+    width: 95vw;
+    height: 95vh;
+    background: rgb(0,50,0);
+    background: radial-gradient(circle, rgba(0,50,0,.9) 0%, rgba(0,20,0,.9) 100%);
+    box-shadow: 2px 2px 5px rgb(0,0,0);
+    border-radius: 10px;
+    /* transition: .5s; */
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    /* transition: .4s; */
+}
+
+.HomePage-Apps-Container.Hidden {
+    width: 0px;
+    display: none;
+    transform: translate(100vw);
+}
+
+.HomePage-Apps-Apps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.HomePage-NavBar-Container {
+	width: 95vw;
+    height: 10vh;
+    margin-bottom: 2vh;
+    background: rgb(0,50,0);
+    box-shadow: 2px 2px 5px rgb(0,0,0);
+    background: radial-gradient(circle, rgba(0,20,0,.9) 0%, rgba(0,50,0,.9) 100%);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-one);
+    font-family: monospace;
+    text-align: center;
+    font-size: large;
+    font-weight: bolder;
+    /* transition: .4s; */
+}
+
+.HomePage-LogIn-Container {
+    position: absolute;
+    width: 95vw;
+    height: 95vh;
+    color: var(--color-one);
+    background: rgb(0,50,0);
+    background: radial-gradient(circle, rgba(0,70,0,.9) 0%, rgba(0,20,0,.9) 100%);
+    box-shadow: 2px 2px 5px rgb(0,0,0);
+    border-radius: 10px;
+    /* transition: .5s; */
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    /* transition: .4s; */
+    font-family: math;
+}
+
+.HomePage-LogIn-Container.Hidden {
+    width: 0px;
+    display: none;
+    transform: translate(100vw);
+}
+
+.HomePage-LogIn-LogIn {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5vh;
+    width: 70%;
+}
+
+.HomePage-LogIn-SignUp {
+    display: flex;
+    flex-flow: column;
+}
+
+.HomePage-LogIn-Title {
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.HomePage-LogIn-SubTitle {
+    font-size: smaller;
+    display: inline-flex;
+    justify-content: center;
+}
+
+.HomePage-LogIn-Label {
+    font-size: large;
+    font-weight: bolder;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.HomePage-LogIn-Input {
+    font-size: medium;
+    width: 100%;
+    font-family: math;
+}
+
+.HomePage-LogIn-Link {
+    color: royalblue;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.HomePage-LogIn-Line {
+    background-color: rgb(0,100,0);
+    width: 2px;
+    height: 40%;
+}
+
+.HomePage-LogIn-FormElement {
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+}
+
+.HomePage-LogIn-Divider {
+    display: inline-flex;
+    justify-content: space-between;
+    flex-flow: column;
+    align-items: center;
+    text-align: center;
+    margin-left: 4vw;
+    margin-right: 4vw;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 100%;
+}
+
+.HomePage-LogIn-Section {
+    width: 40%;
+    min-width: 250px;
+}
+
+.HomePage-LogIn-Error {
+    background-color: rgb(255, 200, 200);
+    border: 2px solid red;
+    font-size: large;
+    font-weight: bold;
+    color: red;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.HomePage-Button {
+    .NewButton-Button {
+        background-color: rgb(0, 50, 0);
+        border-color: rgb(0, 100, 0);
+        color: rgb(0,255,0);
+    }
+    .NewButton-Button:hover[type="default"] {
+        background-color: rgb(0, 100, 0);
+    }
+    span {
+        background-color: rgb(0,255,0);
+    }
+}
+
+.HomePage-Background {
+    width: 110vmax;
+    height: 110vmax;
+}
+
+@media (max-width: 700px) {
+    .HomePage-LogIn-LogIn {
+        flex-flow: column;
+    }
+    .HomePage-LogIn-Divider {
+        margin-top: 2vh;
+        margin-bottom: 2vh;
+        width: 100%;
+        flex-flow: row;
+    }
+    .HomePage-LogIn-Line {
+        height: 2px;
+        width: 40%;
+    }
+}
