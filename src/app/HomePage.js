@@ -3,7 +3,7 @@ import Card from "../component/Card";
 import Button from "../component/Button";
 import BusyIndicator from '../component/BusyIndicator';
 import "./HomePage.css";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, LogIn, EyeOff, Eye, Home } from "../component/Icons";
 import { checkIfLogin, login, logout, signup } from "../api/userAuth";
 
