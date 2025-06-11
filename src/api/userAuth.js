@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const baseURL = ["https://ult-userauth.onrender.com","http://localhost:3001"]
+
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:3001",
+    baseURL: baseURL[0],
     withCredentials: true
 });
 
