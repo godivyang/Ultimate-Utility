@@ -139,7 +139,7 @@ const HomePage = ({showBusyIndicator}) => {
             setCurrentUser(user.name);
             setErrorText("");
             showBusyIndicator(false);
-            moveToApps();
+            moveToMain();
         }).catch((e) => {
           setErrorText(e.response ? e.response.data.message : e.message);
           showBusyIndicator(false);
@@ -166,7 +166,7 @@ const HomePage = ({showBusyIndicator}) => {
     };
 
     const moveToApps = () => {
-        if(loginState === true) setCurrentPage("Apps");
+        if(loginState) setCurrentPage("Apps");
         else {
             moveToLogIn();
         }
