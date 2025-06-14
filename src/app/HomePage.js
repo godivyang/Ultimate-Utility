@@ -80,7 +80,7 @@ const HomePage = ({showBusyIndicator}) => {
     useEffect(() => {
         let animationTimer = null;
         const timeout = setTimeout(() => {
-        const alphas = document.querySelectorAll(".HomePage-Main-BigAlphabet");
+        const alphas = document.querySelectorAll(".BigAlphabet");
         if(alphas.length) {
             animationTimer = (setInterval(()=>{
                 alphas.forEach(alpha => {
@@ -193,11 +193,11 @@ const HomePage = ({showBusyIndicator}) => {
                 <div className="BigTitle">
                     <div className="BigWord">
                         {"ULTIMATE".split("").map((w, i) => 
-                        <div key={i}>{w}</div>)}
+                        <div className="BigAlphabet" key={i}>{w}</div>)}
                     </div> 
                     <div className="BigWord">
                         {"UTILITY".split("").map((w, i) => 
-                        <div key={i}>{w}</div>)}
+                        <div className="BigAlphabet" key={i}>{w}</div>)}
                     </div>
                 </div>
                 <div className="Description">

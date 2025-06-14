@@ -87,9 +87,11 @@
         -webkit-text-stroke: 1px var(--color-one);
         text-shadow: -1px 0px 10px green;
         user-select: none;
-        transition: color .8s ease-in;
         .BigWord {
             display: inline-flex;
+        }
+        .BigAlphabet {
+            transition: color .8s ease-in;
         }
     }
     .Description {
