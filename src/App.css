@@ -4,6 +4,8 @@
   --color-three: #0d2818;
   --color-four: #020202;
   --color-five: #058c42;
+  --color-two-transparent:rgba(5, 45, 15, 0.9);
+  --color-three-transparent:rgba(10, 30, 15, 0.9);
 }
 
 body {

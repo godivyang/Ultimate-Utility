@@ -1,5 +1,4 @@
 import './BusyIndicator.css';
-// import loadingLogo from '../lib/loading.png';
 
 const BusyIndicator = ({show}) => {
   if(show === true) {
@@ -36,14 +35,10 @@ const BusyIndicator = ({show}) => {
   }
   return (
     <div className="BusyIndicator-Container">
-        {/* <div className="App-busy-indicator-background">
-        <img src={loadingLogo} alt="loading" className="busy-indicator-icon" draggable="false"/>
-        <div>Loading please wait...</div>
-        </div> */}
         <div className="BusyIndicator-Background">
           <div style={{display: "flex"}}>
           {
-            "ultimate_utility".split("").map((ch, i) => {
+            "ultimate utility".split("").map((ch, i) => {
               return (
                 <div className="BusyIndicator-Word" key={`busyIndicator_${i}`}>
                   {ch}

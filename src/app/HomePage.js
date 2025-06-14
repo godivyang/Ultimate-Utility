@@ -28,46 +28,36 @@ const apps = [
       app_title: "Dashboard",
       app_description: "One place to track all your progress.",
       app_link: "dashboard",
-      app_color: "rgb(0, 0, 255)"
+      app_color: "rgb(0, 255, 255)"
     }
 ];
 
 const FormInput = ({label="", change=()=>{}, type="text", autoComplete="off"}) => {
     const [passIcon, setPassIcon] = useState(true);
     return(
-        <div className="HomePage-LogIn-FormInput">
-            <div className="HomePage-LogIn-Label">{label}&nbsp;
-                {type === "password" ? 
-                <Button icon={passIcon ? <Eye/> : <EyeOff/>} size={15} 
-                    press={()=>setPassIcon(!passIcon)} type="minimal"/> 
-                : 
-                undefined}
-            </div>
-            <input placeholder={label} className="HomePage-LogIn-Input"
-                type={type === "password" ? passIcon ? "password" : "text" : type}
-                onChange={(e) => change(e.target.value)} autoComplete={autoComplete}/>
+        <div>
+        <div className="Label">{label}&nbsp;
+            {type === "password" ? 
+            <Button icon={passIcon ? <Eye size={20}/> : <EyeOff size={20}/>} 
+                press={()=>setPassIcon(!passIcon)} type="minimal"/> 
+            : 
+            undefined}
+        </div>
+        <input placeholder={label} className="Input"
+            type={type === "password" ? passIcon ? "password" : "text" : type}
+            onChange={(e) => change(e.target.value)} autoComplete={autoComplete}/>
         </div>
     );
 };
 
 const HomePage = ({showBusyIndicator}) => {
     const [currentPage, setCurrentPage] = useState("Main");
-    const [passwordLogIn, setPasswordLogIn] = useState("password");
-    const [passwordSignUp, setPasswordSignUp] = useState("password");
-    const [passwordSignUpConfirm, setPasswordSignUpConfirm] = useState("password");
     const [logInPage, setLogInPage] = useState("LogIn");
     const [errorText, setErrorText] = useState("");
-    const [loginState, setLoginState] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [loginModel, setLoginModel] = useState({ email: "", password: "" });
     const [signupModel, setSignupModel] = useState({ name: "", email: "", password: "", confPassword: "" });
 
-    const emailSignUp = useRef(null);
-    const passSignUp = useRef(null);
-    const passConfSignUp = useRef(null);
-
-    // const { signUp, logIn, logOut, currentUser } = useAuth();
-    // const currentUser = null;
     background = greenBG;
 
     useEffect(() => {
@@ -79,12 +69,10 @@ const HomePage = ({showBusyIndicator}) => {
                 window.location.href = redirect;
             } else {
                 setCurrentUser(user.name);
-                setLoginState(true);
             }
         }).catch((error) => {
             // console.log(error);
             setCurrentUser(null);
-            setLoginState(false);
             moveToLogIn();
         });
     }, []);
@@ -98,7 +86,7 @@ const HomePage = ({showBusyIndicator}) => {
                 alphas.forEach(alpha => {
                     if(Math.random() * 10 > 7) {
                         alpha.style.color = 
-                        alpha.style.color === "rgb(0, 255, 0)" ? "transparent" : "rgb(0, 255, 0)";
+                        alpha.style.color === "var(--color-one)" ? "transparent" : "var(--color-one)";
                     }
                 });
             }, 3000));
@@ -114,7 +102,6 @@ const HomePage = ({showBusyIndicator}) => {
         const {email, password} = loginModel;
         showBusyIndicator(true);
         login({email, password}).then((user) => {
-            setLoginState(true);
             setErrorText("");
             setCurrentUser(user.name);
             showBusyIndicator(false);
@@ -135,7 +122,6 @@ const HomePage = ({showBusyIndicator}) => {
         }
         showBusyIndicator(true);
         signup({ name, email, password }).then((user) => {
-            setLoginState(true);
             setCurrentUser(user.name);
             setErrorText("");
             showBusyIndicator(false);
@@ -148,7 +134,6 @@ const HomePage = ({showBusyIndicator}) => {
 
     const logoutClick = () => {
         logout().then((user) => {
-            setLoginState(false);
             setCurrentUser(null);
         }).catch(e => {
             // console.log(e);
@@ -166,10 +151,9 @@ const HomePage = ({showBusyIndicator}) => {
     };
 
     const moveToApps = () => {
-        if(loginState) setCurrentPage("Apps");
-        else {
-            moveToLogIn();
-        }
+        if(currentUser) 
+            setCurrentPage("Apps");
+        else moveToLogIn();
     }
     const moveToMain = () => {
         setCurrentPage("Main");
@@ -188,42 +172,35 @@ const HomePage = ({showBusyIndicator}) => {
     return (
         <div className="HomePage-Container">
             <img src={background} className="HomePage-Background" alt="background"/>
-            {showBusyIndicator === true ?
-            <BusyIndicator show={showBusyIndicator}/>
-            : undefined}
             <AnimatePresence mode="wait">
             {currentPage === "Main" && <motion.div 
-            key="Main"
-            initial={{ x: -window.innerWidth, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -window.innerWidth, opacity: 0 }}
-            transition={{ type: "spring", duration: 0.4 }}
-            className={`HomePage-Main-Container`}>
-            {/* className={`HomePage-Main-Container ${currentPage === "Main" ? "" : "Hidden"}`}> */}
-            <div className="HomePage-NavBar-Container">
+                key="Main"
+                initial={{ x: -window.innerWidth, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -window.innerWidth, opacity: 0 }}
+                transition={{ type: "spring", duration: 0.4 }}
+                className={`HomePage-Page`}>
+            <div className="HomePage-Page-SubContainer NavBar">
                 <Button text="About us"/>
                 {currentUser ?
                 <Button icon={<LogOut size={15}/>} text="Log Out" press={logoutClick}/>
                 :
                 <Button icon={<LogIn size={15}/>} text="Log In" press={moveToLogIn}/>
                 }
-                {/* <Button/> */}
             </div>
-            <div className="HomePage-Title-Container">
+            <div className="HomePage-Page-SubContainer Title">
                 Welcome {currentUser} to
-                <div className="HomePage-Main-BigTitle">
-                    <div className="HomePage-Main-BigWord">
+                <div className="BigTitle">
+                    <div className="BigWord">
                         {"ULTIMATE".split("").map((w, i) => 
-                        <div className="HomePage-Main-BigAlphabet"
-                        key={i}>{w}</div>)}
+                        <div key={i}>{w}</div>)}
                     </div> 
-                    <div className="HomePage-Main-BigWord">
+                    <div className="BigWord">
                         {"UTILITY".split("").map((w, i) => 
-                        <div className="HomePage-Main-BigAlphabet"
-                        key={i}>{w}</div>)}
+                        <div key={i}>{w}</div>)}
                     </div>
                 </div>
-                <div className="HomePage-Main-Description">
+                <div className="Description">
                 {/* A collection of carefully designed feature-rich apps that helps to make passing time productive. */}
                 Where productivity meets play — explore apps that are intuitive, enjoyable, and built to help you improve.
                 </div>
@@ -231,21 +208,21 @@ const HomePage = ({showBusyIndicator}) => {
             </div>
             </motion.div>}
             {currentPage === "Apps" && <motion.div 
-            key="Apps"
-            initial={{ y: window.innerHeight, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: window.innerWidth, opacity: 0 }}
-            transition={{ type: "spring", duration: 0.4 }}
-            className={`HomePage-Apps-Container`}>
-            {/* className={`HomePage-Apps-Container ${currentPage === "Apps" ? "" : "Hidden"}`}> */}
-                <div className={"HomePage-Apps-Apps"}>
-                    {apps.map((app,i) => 
-                        <Card title={app.app_title} description={app.app_description}
-                        link={app.app_link} color={app.app_color} key={i}/>
-                    )}
+                key="Apps"
+                initial={{ y: window.innerHeight, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: window.innerWidth, opacity: 0 }}
+                transition={{ type: "spring", duration: 0.4 }}
+                className={`HomePage-Page`}>
+            <div className={"HomePage-Page-SubContainer Apps"}>
+                <div className="AppsDrawer">
+                {apps.map((app,i) => 
+                    <Card title={app.app_title} description={app.app_description}
+                    link={app.app_link} color={app.app_color} key={i}/>
+                )}
                 </div>
-                <Button icon={<Home />} press={moveToMain}
-                />
+                <Button icon={<Home />} press={moveToMain}/>
+            </div>
             </motion.div>}
             {currentPage === "LogIn" && <motion.div 
                 key="LogIn"
@@ -253,50 +230,50 @@ const HomePage = ({showBusyIndicator}) => {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: window.innerWidth, opacity: 0 }}
                 transition={{ type: "spring", duration: 0.4 }}
-                className={`HomePage-LogIn-Container`}>
+                className={`HomePage-Page HomePage-Page-SubContainer LogIn`}>
             {logInPage === "LogIn" ?
             <>
-            <div className="HomePage-LogIn-Title">Log In</div>
-            <div className="HomePage-LogIn-SubTitle">
-                Don't have an account?&nbsp;
-                <div className="HomePage-LogIn-Link"
-                onClick={moveToSignUpSection}>Sign Up</div>
+            <div className="Title">Log In</div>
+            <div className="SubTitle">
+                Don't have an account?
+                <Button press={moveToSignUpSection} text="Sign Up"/>
             </div>
             {errorText !== "" ? 
-            <div className="HomePage-LogIn-Error">{errorText}</div>
+            <div className="Error">{errorText}</div>
             : undefined}
-            <div className="HomePage-LogIn-LogIn">
-                <div className="HomePage-LogIn-Section">
+            <div className="HomePage-LogInPage">
+                <div className="Section">
                     <FormInput label="Email" change={(value) => updateLoginModel("email", value)} 
                     type="email" autoComplete="email"/>
                     <FormInput label="Password" change={(value) => updateLoginModel("password", value)} 
                     type="password" autoComplete="current-password"/>
                     <Button text="Log In" press={loginClick}/>
                 </div>
-                <div className="HomePage-LogIn-Divider">
-                    <div className="HomePage-LogIn-Line"></div>
+                <div className="Divider">
+                    <div className="Line"></div>
                     or
-                    <div className="HomePage-LogIn-Line"></div>
+                    <div className="Line"></div>
                 </div>
-                <div className="HomePage-LogIn-Section">
-                    <Button text="Continue with Google"/>
+                <div className="Section">
+                    <Button text="Continue as a Guest"/>
                 </div>
             </div>
-            <Button icon={<Home/>} press={moveToMain} />
+            <div style={{marginTop: "20px"}}>
+                <Button icon={<Home/>} press={moveToMain}/>
+            </div>
             </>
             :
             <>
-            <div className="HomePage-LogIn-Title">Sign Up</div>
-            <div className="HomePage-LogIn-SubTitle">
-                Already have an account?&nbsp;
-                <div className="HomePage-LogIn-Link" 
-                onClick={moveToLogInSection}>Log In</div>
+            <div className="Title">Sign Up</div>
+            <div className="SubTitle">
+                Already have an account?
+                <Button press={moveToLogInSection} text="Log In"/>
             </div>
             {errorText !== "" ? 
-            <div className="HomePage-LogIn-Error">{errorText}</div>
+            <div className="Error">{errorText}</div>
             : undefined}
-            <div className="HomePage-LogIn-LogIn">
-                <div className="HomePage-LogIn-Section">
+            <div className="HomePage-LogInPage">
+                <div className="Section">
                     <FormInput label="Name" change={(value) => updateSignupModel("name", value)}
                         autoComplete="name"/>
                     <FormInput label="Email" change={(value) => updateSignupModel("email", value)} 
@@ -307,16 +284,18 @@ const HomePage = ({showBusyIndicator}) => {
                         type="password" autoComplete="new-password"/>
                     <Button text="Sign Up" press={signupClick}/>
                 </div>
-                <div className="HomePage-LogIn-Divider">
-                    <div className="HomePage-LogIn-Line"></div>
+                <div className="Divider">
+                    <div className="Line"></div>
                     or
-                    <div className="HomePage-LogIn-Line"></div>
+                    <div className="Line"></div>
                 </div>
-                <div className="HomePage-LogIn-Section">
-                <Button text="Continue with Google" />
+                <div className="Section">
+                    <Button text="Continue as a Guest" />
                 </div>
             </div>
-            <Button icon={<Home/>} press={moveToMain} />
+            <div style={{marginTop: "20px"}}>
+                <Button icon={<Home/>} press={moveToMain}/>
+            </div>
             </>
             }
             </motion.div>}
