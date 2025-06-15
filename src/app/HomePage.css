@@ -5,7 +5,7 @@
     height: 100dvh;
     width: 100vw;
     overflow: hidden;
-    background: rgb(0, 50, 0);
+    background: var(--color-four);
     flex-flow: column;
     position: relative;
 }
@@ -48,8 +48,11 @@
         flex-flow: column;
         .AppsDrawer {
             display: flex;
-            flex-flow: row;
             flex-wrap: wrap;
+            height: 80dvh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            justify-content: center;
         }
     }
     &.LogIn {
@@ -85,7 +88,7 @@
         width: min-content;
         text-align: center;
         -webkit-text-stroke: 1px var(--color-one);
-        text-shadow: -1px 0px 10px green;
+        text-shadow: -1px 0px 10px var(--color-three);
         user-select: none;
         .BigWord {
             display: inline-flex;

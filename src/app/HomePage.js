@@ -1,15 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import Card from "../component/Card";
 import Button from "../component/Button";
-import BusyIndicator from '../component/BusyIndicator';
 import "./HomePage.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, LogIn, EyeOff, Eye, Home } from "../component/Icons";
 import { checkIfLogin, login, logout, signup } from "../api/userAuth";
-
-let background = "";
-const bwBG = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXlxZ2k5bWtjcGlqa3h1N21yaWY5ZGxucWoxdmdnejNsa3Y4eWc5byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QXQ0YJ4REhflNzP25u/giphy.gif";
-const greenBG = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXRidmE0YXV5cWZsaGdkYzJpbWt5OHMyczhvaTF4YnU4eDB4NTY5YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BRLez2vAFQrgf0Thqx/giphy.gif";
 
 const apps = [
     {
@@ -32,6 +27,14 @@ const apps = [
     }
 ];
 
+const themes = [{
+        name: "green-theme",
+        background: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXRidmE0YXV5cWZsaGdkYzJpbWt5OHMyczhvaTF4YnU4eDB4NTY5YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BRLez2vAFQrgf0Thqx/giphy.gif"
+    }, { 
+        name: "yellow-theme",
+        background: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bTg4NHp6bHZodHc3bXRqZTYxMXk3ZDU4ZXc5bnVhYW1zNGpmc2gwcSZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/X6ciwNt1zS8rOI6c19/giphy.gif"
+    }];
+
 const FormInput = ({label="", change=()=>{}, type="text", autoComplete="off"}) => {
     const [passIcon, setPassIcon] = useState(true);
     return(
@@ -51,14 +54,13 @@ const FormInput = ({label="", change=()=>{}, type="text", autoComplete="off"}) =
 };
 
 const HomePage = ({showBusyIndicator}) => {
+    const [theme, setTheme] = useState(themes[0]);
     const [currentPage, setCurrentPage] = useState("Main");
     const [logInPage, setLogInPage] = useState("LogIn");
     const [errorText, setErrorText] = useState("");
     const [currentUser, setCurrentUser] = useState(null);
     const [loginModel, setLoginModel] = useState({ email: "", password: "" });
     const [signupModel, setSignupModel] = useState({ name: "", email: "", password: "", confPassword: "" });
-
-    background = greenBG;
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -150,6 +152,12 @@ const HomePage = ({showBusyIndicator}) => {
         setSignupModel({...signupModel});
     };
 
+    const changeToNextTheme = () => {
+        const index = themes.findIndex((th) => th.name == theme.name);
+        if(themes.length - 1 == index) setTheme(themes[0]);
+        else setTheme(themes[index + 1]);
+    }
+
     const moveToApps = () => {
         if(currentUser) 
             setCurrentPage("Apps");
@@ -170,8 +178,8 @@ const HomePage = ({showBusyIndicator}) => {
         setErrorText("");
     }
     return (
-        <div className="HomePage-Container">
-            <img src={background} className="HomePage-Background" alt="background"/>
+        <div className={`HomePage-Container ${theme.name}`}>
+            <img src={theme.background} className="HomePage-Background"/>
             <AnimatePresence mode="wait">
             {currentPage === "Main" && <motion.div 
                 key="Main"
@@ -187,6 +195,7 @@ const HomePage = ({showBusyIndicator}) => {
                 :
                 <Button icon={<LogIn size={15}/>} text="Log In" press={moveToLogIn}/>
                 }
+                <Button text="Change Theme" press={() => changeToNextTheme()}/>
             </div>
             <div className="HomePage-Page-SubContainer Title">
                 Welcome {currentUser} to

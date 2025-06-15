@@ -1,36 +1,55 @@
 :root {
-  --color-one: #16db65;
-  --color-two: #04471c;
-  --color-three: #0d2818;
-  --color-four: #020202;
-  --color-five: #058c42;
-  --color-two-transparent:rgba(5, 45, 15, 0.9);
-  --color-three-transparent:rgba(10, 30, 15, 0.9);
+    --color-one: #16db65;
+    --color-two: #04471c;
+    --color-three: #0d2818;
+    --color-four: #020202;
+    --color-five: #058c42;
+    --color-two-transparent:rgba(5, 45, 15, 0.9);
+    --color-three-transparent:rgba(10, 30, 15, 0.9);
+}
+
+.App {
+    .green-theme {
+        --color-one: #16db65;
+        --color-two: #04471c;
+        --color-three: #0d2818;
+        --color-four: #020202;
+        --color-five: #058c42;
+        --color-two-transparent:rgba(5, 45, 15, 0.9);
+        --color-three-transparent:rgba(10, 30, 15, 0.9);
+    }
+    .yellow-theme {
+        --color-one: #f4e409;
+        --color-two: #c36f09;
+        --color-three: #a63c06;
+        --color-four: #710000;
+        --color-five: #eeba0b;
+        --color-two-transparent:rgba(195, 111, 9, 0.9);
+        --color-three-transparent:rgba(166, 59, 6, 0.9);
+    }
 }
 
 body {
-  margin: 0;
-  color: #fff;
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  background-image: linear-gradient(to bottom, #020917, #101725);
+    margin: 0;
+    color: #fff;
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    background-image: linear-gradient(to bottom, #020917, #101725);
 }
 
-.content {
-  display: flex;
-  min-height: 100dvh;
-  line-height: 1.1;
-  text-align: center;
-  flex-direction: column;
-  justify-content: center;
+::-webkit-scrollbar {
+  background: var(--color-one);
+  width: 1vw;
+  height: 1vh;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-two);
+  border-radius: 10px;
 }
 
-.content h1 {
-  font-size: 3.6rem;
-  font-weight: 700;
+@media (max-width: 768px) {
+  .App_Title {font-size: x-large}
 }
 
-.content p {
-  font-size: 1.2rem;
-  font-weight: 400;
-  opacity: 0.5;
+* {
+  box-sizing: border-box;
 }
