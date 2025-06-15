@@ -10,19 +10,19 @@ const apps = [
     {
       app_title: "Typing Bliss",
       app_description: "From casual to pro, all your typing needs in one app.",
-      app_link: "typing-bliss",
+      app_link: "",
       app_color: "rgb(255, 255, 0)"
     },
     {
       app_title: "Tracking Budget",
       app_description: "Record, visualize and plan you expenditures.",
-      app_link: "tracking-budget",
+      app_link: "https://ult-tracking-budget.web.app/",
       app_color: "rgb(255, 0, 255)"
     },
     {
       app_title: "Dashboard",
       app_description: "One place to track all your progress.",
-      app_link: "dashboard",
+      app_link: "",
       app_color: "rgb(0, 255, 255)"
     }
 ];
