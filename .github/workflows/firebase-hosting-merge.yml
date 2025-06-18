@@ -14,7 +14,7 @@ jobs:
       - name: Install dependencies
         run: npm i
       - run: npm run build
-      - env:
+        env:
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
           REACT_APP_TRACKING_BUDGET_URL: ${{ secrets.REACT_APP_TRACKING_BUDGET_URL }}
           REACT_APP_ULTIMATE_UTILITY_URL: ${{ secrets.REACT_APP_ULTIMATE_UTILITY_URL }}
