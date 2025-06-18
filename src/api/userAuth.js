@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const baseURL = ["https://ult-userauth.onrender.com","http://localhost:3001"]
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 const axiosInstance = axios.create({
-    baseURL: baseURL[0],
+    baseURL,
     withCredentials: true
 });
 

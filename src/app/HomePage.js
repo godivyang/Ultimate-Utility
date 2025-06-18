@@ -5,35 +5,7 @@ import "./HomePage.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, LogIn, EyeOff, Eye, Home } from "../component/Icons";
 import { checkIfLogin, login, logout, signup } from "../api/userAuth";
-
-const apps = [
-    {
-      app_title: "Typing Bliss",
-      app_description: "From casual to pro, all your typing needs in one app.",
-      app_link: "",
-      app_color: "rgb(255, 255, 0)"
-    },
-    {
-      app_title: "Tracking Budget",
-      app_description: "Record, visualize and plan you expenditures.",
-      app_link: "https://ult-tracking-budget.web.app/",
-      app_color: "rgb(255, 0, 255)"
-    },
-    {
-      app_title: "Dashboard",
-      app_description: "One place to track all your progress.",
-      app_link: "",
-      app_color: "rgb(0, 255, 255)"
-    }
-];
-
-const themes = [{
-        name: "green-theme",
-        background: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXRidmE0YXV5cWZsaGdkYzJpbWt5OHMyczhvaTF4YnU4eDB4NTY5YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BRLez2vAFQrgf0Thqx/giphy.gif"
-    }, { 
-        name: "yellow-theme",
-        background: "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bTg4NHp6bHZodHc3bXRqZTYxMXk3ZDU4ZXc5bnVhYW1zNGpmc2gwcSZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/X6ciwNt1zS8rOI6c19/giphy.gif"
-    }];
+import { apps, themes } from "../lib/constants";
 
 const FormInput = ({label="", change=()=>{}, type="text", autoComplete="off"}) => {
     const [passIcon, setPassIcon] = useState(true);
@@ -65,10 +37,9 @@ const HomePage = ({showBusyIndicator}) => {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const redirect = urlParams.get("redirect");
-        const ref = urlParams.get("ref");
         checkIfLogin().then((user) => {
             if(redirect) {
-                window.location.href = redirect;
+                window.location.href = process.env["REACT_APP_" + redirect];
             } else {
                 setCurrentUser(user.name);
             }
