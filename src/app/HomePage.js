@@ -38,8 +38,8 @@ const HomePage = ({showBusyIndicator}) => {
         const urlParams = new URLSearchParams(window.location.search);
         const redirect = urlParams.get("redirect");
         checkIfLogin().then((user) => {
-            if(redirect) {
-                window.location.href = process.env["REACT_APP_" + redirect];
+            if(redirect === "TRACKING_BUDGET") {
+                window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL;
             } else {
                 setCurrentUser(user.name);
             }
