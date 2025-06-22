@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 
 const crossAppLogin = async () => {
     try {
-        const response = await axiosInstance.get("/user/loginCrossApp");
+        const response = await axiosInstance.get("/sso/crossAppLogin");
         return response.data;
     } catch (e) {
         throw e;
