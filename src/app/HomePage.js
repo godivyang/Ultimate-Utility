@@ -4,7 +4,7 @@ import Button from "../component/Button";
 import "./HomePage.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, LogIn, EyeOff, Eye, Home } from "../component/Icons";
-import { checkIfLogin, login, logout, signup } from "../api/userAuth";
+import { checkIfLogin, login, logout, signup, crossAppLogin } from "../api/userAuth";
 import { apps, themes } from "../lib/constants";
 
 const FormInput = ({label="", change=()=>{}, type="text", autoComplete="off"}) => {
@@ -37,17 +37,23 @@ const HomePage = ({showBusyIndicator}) => {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const redirect = urlParams.get("redirect");
-        checkIfLogin().then((user) => {
-            if(redirect === "TRACKING_BUDGET") {
-                window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL;
-            } else {
+        if(redirect) {
+            crossAppLogin().then((token) => {
+                if(redirect === "TRACKING_BUDGET") {
+                    window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?token=" + token;
+                }
+            }).catch((e) => {
+                moveToLogIn();
+            })
+        } else {
+            checkIfLogin().then((user) => {
                 setCurrentUser(user.name);
-            }
-        }).catch((error) => {
-            // console.log(error);
-            setCurrentUser(null);
-            moveToLogIn();
-        });
+            }).catch((e) => {
+                // console.log(error);
+                setCurrentUser(null);
+                moveToLogIn();
+            });
+        }
     }, []);
 
     useEffect(() => {

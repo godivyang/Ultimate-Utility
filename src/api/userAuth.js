@@ -7,6 +7,15 @@ const axiosInstance = axios.create({
     withCredentials: true
 });
 
+const crossAppLogin = async () => {
+    try {
+        const response = await axiosInstance.get("/user/loginCrossApp");
+        return response.data;
+    } catch (e) {
+        throw e;
+    }
+};
+
 const checkIfLogin = async () => {
     try {
         const response = await axiosInstance.get("/user/me");
@@ -43,4 +52,4 @@ const logout = async () => {
     }
 };
 
-export { checkIfLogin, login, logout, signup };
+export { checkIfLogin, login, logout, signup, crossAppLogin };
