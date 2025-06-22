@@ -40,7 +40,7 @@ const HomePage = ({showBusyIndicator}) => {
         if(redirect) {
             crossAppLogin().then((token) => {
                 if(redirect === "TRACKING_BUDGET") {
-                    window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?token=" + token;
+                    window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?token=" + token.token;
                 }
             }).catch((e) => {
                 moveToLogIn();
