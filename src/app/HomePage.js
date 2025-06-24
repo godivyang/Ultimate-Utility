@@ -38,9 +38,9 @@ const HomePage = ({showBusyIndicator}) => {
         const urlParams = new URLSearchParams(window.location.search);
         const redirect = urlParams.get("redirect");
         if(redirect) {
-            crossAppLogin().then((token) => {
+            crossAppLogin().then((data) => {
                 if(redirect === "TRACKING_BUDGET") {
-                    window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?token=" + token.token;
+                    window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
                 }
             }).catch((e) => {
                 moveToLogIn();
@@ -81,10 +81,22 @@ const HomePage = ({showBusyIndicator}) => {
         const {email, password} = loginModel;
         showBusyIndicator(true);
         login({email, password}).then((user) => {
-            setErrorText("");
-            setCurrentUser(user.name);
-            showBusyIndicator(false);
-            moveToMain();
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirect = urlParams.get("redirect");
+            if(redirect) {
+                crossAppLogin().then((data) => {
+                    if(redirect === "TRACKING_BUDGET") {
+                        window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
+                    }
+                }).catch((e) => {
+                    moveToLogIn();
+                })
+            } else {
+                setErrorText("");
+                setCurrentUser(user.name);
+                showBusyIndicator(false);
+                moveToMain();
+            }
         }).catch(e => {
             // console.log(e);
             setErrorText(e.response ? e.response.data : e.message);
