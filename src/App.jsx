@@ -2,7 +2,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import BusyIndicator from './component/BusyIndicator';
-import HomePage from './app/HomePage';
+import HomePage from './views/HomePage';
 
 const App = () => {
   const [busyDialogVisible, setBusyDialogVisible] = useState(false);

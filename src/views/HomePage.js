@@ -4,7 +4,7 @@ import Button from "../component/Button";
 import "./HomePage.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, LogIn, EyeOff, Eye, Home } from "../component/Icons";
-import { checkIfLogin, login, logout, signup, crossAppLogin } from "../api/userAuth";
+import { checkIfLogin, login, logout, signup, crossAppLogin, guestLogin } from "../api/userAuth";
 import { apps, themes } from "../lib/constants";
 
 const FormInput = ({label="", change=()=>{}, type="text", autoComplete="off"}) => {
@@ -43,7 +43,7 @@ const HomePage = ({showBusyIndicator}) => {
                     window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
                 }
             }).catch((e) => {
-                moveToLogIn();
+                moveTo("LogIn");
             })
         } else {
             checkIfLogin().then((user) => {
@@ -51,7 +51,7 @@ const HomePage = ({showBusyIndicator}) => {
             }).catch((e) => {
                 // console.log(error);
                 setCurrentUser(null);
-                moveToLogIn();
+                moveTo("LogIn");
             });
         }
     }, []);
@@ -77,26 +77,36 @@ const HomePage = ({showBusyIndicator}) => {
         };
     }, [currentPage]);
 
+    const _afterUserAuthenticated = (user) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirect = urlParams.get("redirect");
+        if(redirect) {
+            crossAppLogin().then((data) => {
+                if(redirect === "TRACKING_BUDGET") {
+                    window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
+                } else {
+                    _setUserCredentials(user.name);
+                }
+            }).catch((e) => {
+                moveTo("LogIn");
+            })
+        } else {
+            _setUserCredentials(user.name);
+        }
+    }
+
+    const _setUserCredentials = (userName) => {
+        setErrorText("");
+        setCurrentUser(userName);
+        showBusyIndicator(false);
+        moveTo("Main");
+    }
+
     const loginClick = () => {
         const {email, password} = loginModel;
         showBusyIndicator(true);
         login({email, password}).then((user) => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const redirect = urlParams.get("redirect");
-            if(redirect) {
-                crossAppLogin().then((data) => {
-                    if(redirect === "TRACKING_BUDGET") {
-                        window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
-                    }
-                }).catch((e) => {
-                    moveToLogIn();
-                })
-            } else {
-                setErrorText("");
-                setCurrentUser(user.name);
-                showBusyIndicator(false);
-                moveToMain();
-            }
+            _afterUserAuthenticated(user);
         }).catch(e => {
             // console.log(e);
             setErrorText(e.response ? e.response.data : e.message);
@@ -113,59 +123,81 @@ const HomePage = ({showBusyIndicator}) => {
         }
         showBusyIndicator(true);
         signup({ name, email, password }).then((user) => {
-            setCurrentUser(user.name);
-            setErrorText("");
-            showBusyIndicator(false);
-            moveToMain();
+            _afterUserAuthenticated(user);
         }).catch((e) => {
           setErrorText(e.response ? e.response.data.message : e.message);
           showBusyIndicator(false);
         });
     };
 
+    const loginAsGuest = () => {
+        showBusyIndicator(true);
+        guestLogin().then((user) => {
+            _afterUserAuthenticated(user);
+        }).catch((e) => {
+            setErrorText(e.response ? e.response.data.message : e.message);
+            showBusyIndicator(false);
+        });
+    };
+
+    //__________________________________
+    // to logout the current currentUser
+    //__________________________________
     const logoutClick = () => {
         logout().then((user) => {
             setCurrentUser(null);
         }).catch(e => {
             // console.log(e);
         });
-    }
+    };
 
+    //__________________________________________________
+    // to update the loginModel based on the user input.
+    //__________________________________________________
     const updateLoginModel = (key, value) => {
         loginModel[key] = value;
         setLoginModel({...loginModel});
     };
 
+    //______________________________________________________________________________
+    // to move from one page to another OR from one subsection of a page to another.
+    //______________________________________________________________________________
     const updateSignupModel = (key, value) => {
         signupModel[key] = value;
         setSignupModel({...signupModel});
     };
 
+    //____________________________
+    // to change theme of the app.
+    //____________________________
     const changeToNextTheme = () => {
         const index = themes.findIndex((th) => th.name == theme.name);
         if(themes.length - 1 == index) setTheme(themes[0]);
         else setTheme(themes[index + 1]);
     }
 
-    const moveToApps = () => {
-        if(currentUser) 
+    //_______________________________________________________________________________
+    // to move from one page to another and from one subsection of a page to another.
+    //_______________________________________________________________________________
+    const moveTo = (pgName, subSection) => {
+        if(pgName === "Apps" && currentUser) {
             setCurrentPage("Apps");
-        else moveToLogIn();
-    }
-    const moveToMain = () => {
-        setCurrentPage("Main");
-    }
-    const moveToLogIn = () => {
-        setCurrentPage("LogIn");
-    }
-    const moveToLogInSection = () => {
-        setLogInPage("LogIn");
-        setErrorText("");
-    }
-    const moveToSignUpSection = () => {
-        setLogInPage("SignUp");
-        setErrorText("");
-    }
+        } else if(pgName === "Main") {
+            setCurrentPage("Main");
+        } else if(pgName === "LogIn") {
+            setCurrentPage("LogIn");
+            setErrorText("");
+            if(subSection === "LogIn") {
+                setLogInPage("LogIn");
+            } else if(subSection === "SignUp") {
+                setLogInPage("SignUp");
+            }
+        } else {
+            setCurrentPage("LogIn");
+            setLogInPage("LogIn");
+        }
+    };
+
     return (
         <div className={`HomePage-Container ${theme.name}`}>
             <img src={theme.background} className="HomePage-Background"/>
@@ -182,7 +214,7 @@ const HomePage = ({showBusyIndicator}) => {
                 {currentUser ?
                 <Button icon={<LogOut size={15}/>} text="Log Out" press={logoutClick}/>
                 :
-                <Button icon={<LogIn size={15}/>} text="Log In" press={moveToLogIn}/>
+                <Button icon={<LogIn size={15}/>} text="Log In" press={() => moveTo("LogIn")}/>
                 }
                 <Button text="Change Theme" press={() => changeToNextTheme()}/>
             </div>
@@ -202,7 +234,7 @@ const HomePage = ({showBusyIndicator}) => {
                 {/* A collection of carefully designed feature-rich apps that helps to make passing time productive. */}
                 Where productivity meets play — explore apps that are intuitive, enjoyable, and built to help you improve.
                 </div>
-                <Button text="Let's Go!" press={moveToApps}/>
+                <Button text="Let's Go!" press={() => moveTo("Apps")}/>
             </div>
             </motion.div>}
             {currentPage === "Apps" && <motion.div 
@@ -219,7 +251,7 @@ const HomePage = ({showBusyIndicator}) => {
                     link={app.app_link} color={app.app_color} key={i}/>
                 )}
                 </div>
-                <Button icon={<Home />} press={moveToMain}/>
+                <Button icon={<Home />} press={() => moveTo("Main")}/>
             </div>
             </motion.div>}
             {currentPage === "LogIn" && <motion.div 
@@ -234,7 +266,7 @@ const HomePage = ({showBusyIndicator}) => {
             <div className="Title">Log In</div>
             <div className="SubTitle">
                 Don't have an account?
-                <Button press={moveToSignUpSection} text="Sign Up"/>
+                <Button press={() => moveTo("LogIn", "SignUp")} text="Sign Up"/>
             </div>
             {errorText !== "" ? 
             <div className="Error">{errorText}</div>
@@ -253,11 +285,11 @@ const HomePage = ({showBusyIndicator}) => {
                     <div className="Line"></div>
                 </div>
                 <div className="Section">
-                    <Button text="Continue as a Guest"/>
+                    <Button text="Continue as a Guest" press={loginAsGuest}/>
                 </div>
             </div>
             <div style={{marginTop: "20px"}}>
-                <Button icon={<Home/>} press={moveToMain}/>
+                <Button icon={<Home/>} press={() => moveTo("Main")}/>
             </div>
             </>
             :
@@ -265,7 +297,7 @@ const HomePage = ({showBusyIndicator}) => {
             <div className="Title">Sign Up</div>
             <div className="SubTitle">
                 Already have an account?
-                <Button press={moveToLogInSection} text="Log In"/>
+                <Button press={() => moveTo("LogIn", "LogIn")} text="Log In"/>
             </div>
             {errorText !== "" ? 
             <div className="Error">{errorText}</div>
@@ -288,11 +320,11 @@ const HomePage = ({showBusyIndicator}) => {
                     <div className="Line"></div>
                 </div>
                 <div className="Section">
-                    <Button text="Continue as a Guest" />
+                    <Button text="Continue as a Guest" press={loginAsGuest}/>
                 </div>
             </div>
             <div style={{marginTop: "20px"}}>
-                <Button icon={<Home/>} press={moveToMain}/>
+                <Button icon={<Home/>} press={() => moveTo("Main")}/>
             </div>
             </>
             }

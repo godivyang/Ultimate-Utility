@@ -52,4 +52,13 @@ const logout = async () => {
     }
 };
 
-export { checkIfLogin, login, logout, signup, crossAppLogin };
+const guestLogin = async () => {
+    try {
+        const response = await axiosInstance.post("/user/guestLogin");
+        return response.data;
+    } catch (e) {
+        throw e;
+    }
+}
+
+export { checkIfLogin, login, logout, signup, crossAppLogin, guestLogin };
