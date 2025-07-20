@@ -19,6 +19,7 @@ jobs:
           REACT_APP_TRACKING_BUDGET_URL: ${{ secrets.REACT_APP_TRACKING_BUDGET_URL }}
           REACT_APP_ULTIMATE_UTILITY_URL: ${{ secrets.REACT_APP_ULTIMATE_UTILITY_URL }}
           REACT_APP_TYPING_BLISS_URL: ${{ secrets.REACT_APP_TYPING_BLISS_URL }}
+          REACT_APP_DIET_PLANNER_URL: ${{ secrets.REACT_APP_DIET_PLANNER_URL }}
           REACT_APP_DASHBOARD_URL: ${{ secrets.REACT_APP_DASHBOARD_URL }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
