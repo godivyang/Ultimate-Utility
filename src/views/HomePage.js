@@ -41,6 +41,8 @@ const HomePage = ({showBusyIndicator}) => {
             crossAppLogin().then((data) => {
                 if(redirect === "TRACKING_BUDGET") {
                     window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
+                } else if(redirect === "DIET_PLANNER") {
+                    window.location.href = process.env.REACT_APP_DIET_PLANNER + "?code=" + data.code;
                 }
             }).catch((e) => {
                 moveTo("LogIn");
