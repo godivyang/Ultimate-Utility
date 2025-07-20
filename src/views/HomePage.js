@@ -46,7 +46,7 @@ const HomePage = ({showBusyIndicator}) => {
                 }
             }).catch((e) => {
                 moveTo("LogIn");
-            })
+            });
         } else {
             checkIfLogin().then((user) => {
                 setCurrentUser(user.name);
