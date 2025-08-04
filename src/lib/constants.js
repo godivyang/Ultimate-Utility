@@ -12,10 +12,16 @@ const apps = [
         app_color: "rgb(255, 0, 255)"
         },
         {
+        app_title: "Diet Planner",
+        app_description: "Mobile-friendly app to easily generate diets and manage clients.",
+        app_link: process.env.REACT_APP_DASHBOARD_URL,
+        app_color: "rgb(0, 255, 255)"
+        },
+        {
         app_title: "Dashboard",
         app_description: "One place to track all your progress.",
         app_link: process.env.REACT_APP_DASHBOARD_URL,
-        app_color: "rgb(0, 255, 255)"
+        app_color: "rgb(0, 0, 255)"
         }
     ];
 

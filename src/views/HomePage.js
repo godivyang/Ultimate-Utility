@@ -43,6 +43,8 @@ const HomePage = ({showBusyIndicator}) => {
                     window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
                 } else if(redirect === "DIET_PLANNER") {
                     window.location.href = process.env.REACT_APP_DIET_PLANNER_URL + "?code=" + data.code;
+                } else if(redirect === "TYPING_BLISS") {
+                    window.location.href = process.env.REACT_APP_TYPING_BLISS_URL + "?code=" + data.code;
                 }
             }).catch((e) => {
                 moveTo("LogIn");
@@ -88,6 +90,8 @@ const HomePage = ({showBusyIndicator}) => {
                     window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
                 } else if(redirect === "DIET_PLANNER") {
                     window.location.href = process.env.REACT_APP_DIET_PLANNER_URL + "?code=" + data.code;
+                } else if(redirect === "TYPING_BLISS") {
+                    window.location.href = process.env.REACT_APP_TYPING_BLISS_URL + "?code=" + data.code;
                 } else {
                     _setUserCredentials(user.name);
                 }
