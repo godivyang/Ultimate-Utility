@@ -14,7 +14,7 @@ const apps = [
         {
         app_title: "Diet Planner",
         app_description: "Mobile-friendly app to easily generate diets and manage clients.",
-        app_link: process.env.REACT_APP_DASHBOARD_URL,
+        app_link: process.env.REACT_APP_DIET_PLANNER_URL,
         app_color: "rgb(0, 255, 255)"
         },
         {
