@@ -8,14 +8,16 @@ const envVars = {};
 
 for (const key in process.env) {
   if (key.startsWith('REACT_APP_')) {
-    envVars[`process.env.${key}`] = JSON.stringify(process.env[key]);
+    envVars[key] = JSON.stringify(process.env[key]);
   }
 }
 
 export default defineConfig({
   source: {
     define: {
-      ...envVars,
+      'process.env': {
+        ...envVars,
+      }
     }
   },
   server: {
