@@ -10,54 +10,58 @@ const axiosInstance = axios.create({
 const crossAppLogin = async () => {
     try {
         const response = await axiosInstance.get("/sso/crossAppLogin");
-        return response.data;
+        return response.data.data;
     } catch (e) {
-        throw e;
+        throw e.response.details.message;
     }
 };
 
 const checkIfLogin = async () => {
     try {
-        const response = await axiosInstance.get("/user/me");
-        return response.data;
+        let response = await axiosInstance.get("/user/me");
+        return response.data.data;
     } catch (e) {
-        throw e;
+        return await axiosInstance.get("/user/refresh").then((res) => {
+            return res.data.data;
+        }).catch(e => {
+            throw e.response.details.message;
+        });
     }
 };
 
 const login = async ({ email="", password="" }) => {
     try {
         const response = await axiosInstance.post("/user/login", { email, password });
-        return response.data;
+        return response.data.data;
     } catch (e) {
-        throw e;
+        throw e.response.details.message;
     }
 };
 
 const signup = async ({ name="", email="", password="" }) => {
     try {
         const response = await axiosInstance.post("/user/signup", { name, email, password });
-        return response.data;
+        return response.data.data;
     } catch (e) {
-        throw e;
+        throw e.response.details.message;
     }
 };
 
 const logout = async () => {
     try {
         const response = await axiosInstance.post("/user/logout");
-        return response.data;
+        return response.data.data;
     } catch (e) {
-        throw e;
+        throw e.response.details.message;
     }
 };
 
 const guestLogin = async () => {
     try {
         const response = await axiosInstance.post("/user/guestLogin");
-        return response.data;
+        return response.data.data;
     } catch (e) {
-        throw e;
+        throw e.response.details.message;
     }
 }
 
