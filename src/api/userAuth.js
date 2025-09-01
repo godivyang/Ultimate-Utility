@@ -12,7 +12,7 @@ const crossAppLogin = async () => {
         const response = await axiosInstance.get("/sso/crossAppLogin");
         return response.data.data;
     } catch (e) {
-        throw e.response.data.details.message;
+        throw e.response.data.details;
     }
 };
 
@@ -24,7 +24,7 @@ const checkIfLogin = async () => {
         return await axiosInstance.get("/user/refresh").then((res) => {
             return res.data.data;
         }).catch(e => {
-            throw e.response.data.details.message;
+            throw e.response.data.details;
         });
     }
 };
@@ -34,7 +34,7 @@ const login = async ({ email="", password="" }) => {
         const response = await axiosInstance.post("/user/login", { email, password });
         return response.data.data;
     } catch (e) {
-        throw e.response.data.details.message;
+        throw e.response.data.details;
     }
 };
 
@@ -43,7 +43,7 @@ const signup = async ({ name="", email="", password="" }) => {
         const response = await axiosInstance.post("/user/signup", { name, email, password });
         return response.data.data;
     } catch (e) {
-        throw e.response.data.details.message;
+        throw e.response.data.details;
     }
 };
 
@@ -52,7 +52,7 @@ const logout = async () => {
         const response = await axiosInstance.post("/user/logout");
         return response.data.data;
     } catch (e) {
-        throw e.response.data.details.message;
+        throw e.response.data.details;
     }
 };
 
@@ -61,7 +61,7 @@ const guestLogin = async () => {
         const response = await axiosInstance.post("/user/guestLogin");
         return response.data.data;
     } catch (e) {
-        throw e.response.data.details.message;
+        throw e.response.data.details;
     }
 }
 

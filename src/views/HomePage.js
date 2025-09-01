@@ -117,7 +117,7 @@ const HomePage = ({showBusyIndicator}) => {
             _afterUserAuthenticated(user);
         }).catch(e => {
             // console.log(e);
-            setErrorText(e.response ? e.response.data : e.message);
+            setErrorText(e.code, e.message);
             showBusyIndicator(false);
         });
     };
@@ -133,7 +133,7 @@ const HomePage = ({showBusyIndicator}) => {
         signup({ name, email, password }).then((user) => {
             _afterUserAuthenticated(user);
         }).catch((e) => {
-          setErrorText(e.response ? e.response.data.message : e.message);
+          setErrorText(e.code, e.message);
           showBusyIndicator(false);
         });
     };
@@ -143,7 +143,7 @@ const HomePage = ({showBusyIndicator}) => {
         guestLogin().then((user) => {
             _afterUserAuthenticated(user);
         }).catch((e) => {
-            setErrorText(e.response ? e.response.data.message : e.message);
+            setErrorText(e.code, e.message);
             showBusyIndicator(false);
         });
     };
