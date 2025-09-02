@@ -37,27 +37,26 @@ const HomePage = ({showBusyIndicator}) => {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const redirect = urlParams.get("redirect");
-        if(redirect) {
-            crossAppLogin().then((data) => {
-                if(redirect === "TRACKING_BUDGET") {
-                    window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
-                } else if(redirect === "DIET_PLANNER") {
-                    window.location.href = process.env.REACT_APP_DIET_PLANNER_URL + "?code=" + data.code;
-                } else if(redirect === "TYPING_BLISS") {
-                    window.location.href = process.env.REACT_APP_TYPING_BLISS_URL + "?code=" + data.code;
-                }
-            }).catch((e) => {
-                moveTo("LogIn");
-            });
-        } else {
-            checkIfLogin().then((user) => {
-                setCurrentUser(user.name);
-            }).catch((e) => {
-                // console.log(error);
-                setCurrentUser(null);
-                moveTo("LogIn");
-            });
-        }
+        checkIfLogin().then((user) => {
+            setCurrentUser(user.name);
+            if(redirect) {
+                crossAppLogin().then((data) => {
+                    if(redirect === "TRACKING_BUDGET") {
+                        window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
+                    } else if(redirect === "DIET_PLANNER") {
+                        window.location.href = process.env.REACT_APP_DIET_PLANNER_URL + "?code=" + data.code;
+                    } else if(redirect === "TYPING_BLISS") {
+                        window.location.href = process.env.REACT_APP_TYPING_BLISS_URL + "?code=" + data.code;
+                    }
+                }).catch((e) => {
+                    moveTo("LogIn");
+                });
+            }
+        }).catch((e) => {
+            // console.log(error);
+            setCurrentUser(null);
+            moveTo("LogIn");
+        });
     }, []);
 
     useEffect(() => {
