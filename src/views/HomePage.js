@@ -207,7 +207,7 @@ const HomePage = ({showBusyIndicator}) => {
 
     return (
         <div className={`HomePage-Container ${theme.name}`}>
-            <img src={theme.background} className="HomePage-Background"/>
+            <img src={`/${theme.name}.gif`} className="HomePage-Background"/>
             <AnimatePresence mode="wait">
             {currentPage === "Main" && <motion.div 
                 key="Main"
