@@ -27,18 +27,47 @@ const FormInput = ({label="", change=()=>{}, type="text", autoComplete="off"}) =
 
 const HomePage = ({showBusyIndicator}) => {
     const [theme, setTheme] = useState(themes[0]);
-    const [currentPage, setCurrentPage] = useState("Main");
+    const [currentPage, setCurrentPage] = useState();
     const [logInPage, setLogInPage] = useState("LogIn");
     const [errorText, setErrorText] = useState("");
     const [currentUser, setCurrentUser] = useState(null);
     const [loginModel, setLoginModel] = useState({ email: "", password: "" });
     const [signupModel, setSignupModel] = useState({ name: "", email: "", password: "", confPassword: "" });
 
+    const [waiting, setWaiting] = useState(true);
+    const [loginFailed, setLoginFailed] = useState(false);
+    const [waitingTime, setWaitingTime] = useState(0);
+
+    const address = "UltimateUtility-Login-Tries";
+    // const appName = "DIET_PLANNER";
+    // const appURL = process.env.REACT_APP_DIET_PLANNER_URL;
+
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const redirect = urlParams.get("redirect");
+
+        let loginTriesFlag = localStorage.getItem(address),
+            timer, time = 0;
+        if (!loginTriesFlag) {
+            localStorage.setItem(address, "fresh");
+            timer = setInterval(() => {
+                time++;
+                setWaitingTime(time);
+            }, 1000);
+        } else if (loginTriesFlag === "tried") {
+            localStorage.setItem(address, "final");
+        } else if (loginTriesFlag === "fresh") {
+            // times when user refreshes manually
+        } else {
+            localStorage.removeItem(address);
+            setLoginFailed(true);
+            clearInterval(timer);
+            // alert("SSO LOGIN FAILED!");
+            return;
+        }
+
         checkIfLogin().then((user) => {
-            setCurrentUser(user.name);
+            localStorage.removeItem(address);
             if(redirect) {
                 crossAppLogin().then((data) => {
                     if(redirect === "TRACKING_BUDGET") {
@@ -51,9 +80,15 @@ const HomePage = ({showBusyIndicator}) => {
                 }).catch((e) => {
                     moveTo("LogIn");
                 });
+            } else {
+                setCurrentUser(user.name);
+                setWaiting(false);
+                moveTo("Main");
             }
         }).catch((e) => {
             // console.log(error);
+            localStorage.removeItem(address);
+            setWaiting(false);
             setCurrentUser(null);
             moveTo("LogIn");
         });
@@ -206,6 +241,7 @@ const HomePage = ({showBusyIndicator}) => {
     };
 
     return (
+        <>{!waiting ?
         <div className={`HomePage-Container ${theme.name}`}>
             <img src={`/${theme.name}.gif`} className="HomePage-Background"/>
             <AnimatePresence mode="wait">
@@ -338,6 +374,32 @@ const HomePage = ({showBusyIndicator}) => {
             </motion.div>}
             </AnimatePresence>
         </div>
+        :
+        <>
+        <div className='HomePage-Waiting-Container'>
+            <span className="CustomBackground">
+                <span>
+                    <div>Welcome to</div>
+                    <span className='AppName'>Ultimate Utility</span>
+                </span>
+                <div style={{margin: "1rem 0"}}>
+                    Please wait while we are authenticating you...
+                </div>
+                <span>
+                {!!waitingTime && 
+                <div className='WaitingTime'>
+                    <div>Waiting time: </div>
+                    <span style={{fontSize: "2.5rem", fontWeight: "900", color: "white"}}>{waitingTime}s</span>
+                    <div>expect &lt;60s</div>
+                </div>}
+                </span>
+            </span>
+            {loginFailed &&
+            <Button press={refreshPage} text="Refresh"/>
+            }
+        </div>
+        </>}
+        </>
     )
 }
 

@@ -7,6 +7,10 @@ const axiosInstance = axios.create({
     withCredentials: true
 });
 
+// const wait = (time=1000, res) => {
+//     setTimeout(async () => res(), time);
+// }
+
 const crossAppLogin = async () => {
     try {
         const response = await axiosInstance.get("/sso/crossAppLogin");
@@ -17,6 +21,7 @@ const crossAppLogin = async () => {
 };
 
 const checkIfLogin = async () => {
+    // return new Promise((res,rej) => wait(3500, res)).then(async () => {
     try {
         let response = await axiosInstance.get("/user/me");
         return response.data.data;
@@ -27,6 +32,7 @@ const checkIfLogin = async () => {
             throw e.response.data.details;
         });
     }
+    // });
 };
 
 const login = async ({ email="", password="" }) => {
