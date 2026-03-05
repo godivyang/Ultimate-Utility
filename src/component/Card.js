@@ -1,8 +1,7 @@
 import { useRef } from 'react';
 import './Card.css';
-import {Link} from 'react-router-dom';
 
-const Card = ({title, description, link, color}) => {
+const Card = ({title, description, color="black", press=()=>{}}) => {
     const ripple = useRef(null);
 
     const onCardMouseEnter = (e) => {
@@ -19,12 +18,12 @@ const Card = ({title, description, link, color}) => {
     }
 
     return (
-    <Link to={link} className="Card-Container"
+    <div className="Card-Container" onClick={press}
     onMouseEnter={onCardMouseEnter} onMouseLeave={onCardMouseLeave}>
         <span className="Card-Circle" style={{background: color}} ref={ripple}></span>
         <div className="Card-Title">{title}</div>
         <div className="Card-Description" style={{color}}>{description}</div>
-    </Link>
+    </div>
     );
 }
 

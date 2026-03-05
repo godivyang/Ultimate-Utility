@@ -34,7 +34,6 @@ const HomePage = ({showBusyIndicator}) => {
     const [loginModel, setLoginModel] = useState({ email: "", password: "" });
     const [signupModel, setSignupModel] = useState({ name: "", email: "", password: "", confPassword: "" });
 
-    const [waiting, setWaiting] = useState(true);
     const [loginFailed, setLoginFailed] = useState(false);
     const [waitingTime, setWaitingTime] = useState(0);
 
@@ -48,49 +47,27 @@ const HomePage = ({showBusyIndicator}) => {
 
         let loginTriesFlag = localStorage.getItem(address),
             timer, time = 0;
-        if (!loginTriesFlag) {
-            localStorage.setItem(address, "fresh");
-            timer = setInterval(() => {
-                time++;
-                setWaitingTime(time);
-            }, 1000);
-        } else if (loginTriesFlag === "tried") {
-            localStorage.setItem(address, "final");
-        } else if (loginTriesFlag === "fresh") {
-            // times when user refreshes manually
-        } else {
-            localStorage.removeItem(address);
-            setLoginFailed(true);
-            clearInterval(timer);
-            // alert("SSO LOGIN FAILED!");
-            return;
-        }
-
+        
+        timer = setInterval(() => {
+            time++;
+            setWaitingTime(time);
+        }, 1000);
+        
         checkIfLogin().then((user) => {
-            localStorage.removeItem(address);
-            if(redirect) {
-                crossAppLogin().then((data) => {
-                    if(redirect === "TRACKING_BUDGET") {
-                        window.location.href = process.env.REACT_APP_TRACKING_BUDGET_URL + "?code=" + data.code;
-                    } else if(redirect === "DIET_PLANNER") {
-                        window.location.href = process.env.REACT_APP_DIET_PLANNER_URL + "?code=" + data.code;
-                    } else if(redirect === "TYPING_BLISS") {
-                        window.location.href = process.env.REACT_APP_TYPING_BLISS_URL + "?code=" + data.code;
-                    }
-                }).catch((e) => {
-                    moveTo("LogIn");
-                });
-            } else {
-                setCurrentUser(user.name);
-                setWaiting(false);
+            // localStorage.removeItem(address);
+            _afterUserAuthenticated(user);
+            if(!redirect) {
                 moveTo("Main");
             }
         }).catch((e) => {
             // console.log(error);
-            localStorage.removeItem(address);
-            setWaiting(false);
+            // localStorage.removeItem(address);
+            // setWaiting(false);
             setCurrentUser(null);
             moveTo("LogIn");
+        }).then(() => {
+            setWaitingTime(0);
+            clearInterval(timer);
         });
     }, []);
 
@@ -115,9 +92,9 @@ const HomePage = ({showBusyIndicator}) => {
         };
     }, [currentPage]);
 
-    const _afterUserAuthenticated = (user) => {
+    const _afterUserAuthenticated = (user, manualRedirect) => {
         const urlParams = new URLSearchParams(window.location.search);
-        const redirect = urlParams.get("redirect");
+        const redirect = urlParams.get("redirect") || manualRedirect;
         if(redirect) {
             crossAppLogin().then((data) => {
                 if(redirect === "TRACKING_BUDGET") {
@@ -240,8 +217,20 @@ const HomePage = ({showBusyIndicator}) => {
         }
     };
 
+    const onAppCardClick = (manualRedirect) => {
+        checkIfLogin().then((user) => {
+            _afterUserAuthenticated(user, manualRedirect);
+        }).catch((e) => {
+            setCurrentUser(null);
+            moveTo("LogIn");
+        }).then(() => {
+            setWaitingTime(0);
+            clearInterval(timer);
+        });
+    }
+
     return (
-        <>{!waiting ?
+        <>{waitingTime === 0 ?
         <div className={`HomePage-Container ${theme.name}`}>
             <img src={`/${theme.name}.gif`} className="HomePage-Background"/>
             <AnimatePresence mode="wait">
@@ -290,8 +279,8 @@ const HomePage = ({showBusyIndicator}) => {
             <div className={"HomePage-Page-SubContainer Apps"}>
                 <div className="AppsDrawer">
                 {apps.map((app,i) => 
-                    <Card title={app.app_title} description={app.app_description}
-                    link={app.app_link} color={app.app_color} key={i}/>
+                    <Card title={app.app_title} description={app.app_description} color={app.app_color} 
+                    key={app.app_key} press={() => onAppCardClick(app.app_key)}/>
                 )}
                 </div>
                 <Button icon={<Home />} press={() => moveTo("Main")}/>

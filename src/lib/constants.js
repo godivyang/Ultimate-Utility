@@ -3,25 +3,29 @@ const apps = [
         app_title: "Typing Bliss",
         app_description: "From casual to pro, all your typing needs in one app.",
         app_link: process.env.REACT_APP_TYPING_BLISS_URL,
-        app_color: "rgb(255, 255, 0)"
+        app_color: "rgb(255, 255, 0)",
+        app_key: "TYPING_BLISS"
         },
         {
         app_title: "Tracking Budget",
         app_description: "Record, visualize and plan you expenditures.",
         app_link: process.env.REACT_APP_TRACKING_BUDGET_URL,
-        app_color: "rgb(255, 0, 255)"
+        app_color: "rgb(255, 0, 255)",
+        app_key: "TRACKING_BUDGET"
         },
         {
         app_title: "Diet Planner",
         app_description: "Mobile-friendly app to easily generate diets and manage clients.",
         app_link: process.env.REACT_APP_DIET_PLANNER_URL,
-        app_color: "rgb(0, 255, 255)"
+        app_color: "rgb(0, 255, 255)",
+        app_key: "DIET_PLANNER"
         },
         {
         app_title: "Dashboard",
         app_description: "One place to track all your progress.",
         app_link: process.env.REACT_APP_DASHBOARD_URL,
-        app_color: "rgb(0, 0, 255)"
+        app_color: "rgb(0, 0, 255)",
+        app_key: "DASHBOARD"
         }
     ];
 
