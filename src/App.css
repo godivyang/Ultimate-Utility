@@ -15,8 +15,7 @@ html {
         --color-three: #04471c;
         --color-four: #0d2818;
         --color-five: #020202;
-        --color-two-transparent:rgba(5, 45, 15, .99);
-        --color-three-transparent:rgba(10, 30, 15, .99);
+        --color-four-transparent: #0d2818e0;
     }
     body.yellow-theme {
         --color-one: #34840d;
@@ -24,8 +23,7 @@ html {
         --color-three: #f3eff5;
         --color-four: #9af8bb;
         --color-five: #a8e6ac;
-        --color-two-transparent:rgba(195, 111, 9, .9);
-        --color-three-transparent:rgba(166, 59, 6, .9);
+        --color-four-transparent: #9af8bbe0;
     }
 }
 

@@ -26,7 +26,7 @@
     color: var(--color-one);
     background: var(--color-four);
     box-shadow: 2px 2px 5px var(--color-four);
-    background: radial-gradient(circle, var(--color-three) 0%, var(--color-four) 100%);
+    background: radial-gradient(circle, var(--color-three) 0%, var(--color-four-transparent) 100%);
     font-family: monospace;
     text-align: center;
     font-size: x-large;
@@ -88,7 +88,7 @@
         width: min-content;
         text-align: center;
         /* -webkit-text-stroke: 1px var(--color-one); */
-        text-shadow: 10px 10px var(--color-four);
+        text-shadow: 1vw 1vw var(--color-four);
         user-select: none;
         .BigWord {
             display: inline-flex;
@@ -212,7 +212,7 @@
 .Background-Container {
     background: var(--color-four);
     padding: 10px;
-    z-index: 1;
+    z-index: -1;
     overflow: hidden;
     display: flex;
     flex-flow: column;
