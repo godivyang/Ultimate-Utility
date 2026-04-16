@@ -28,9 +28,11 @@
     }
     &:hover:not([enabled="no"]) {
         background-color: var(--color-five);
+        color: var(--color-one);
     }
     &:hover[type = "default"]:not([enabled="no"]) {
         background-color: var(--color-five);
+        color: var(--color-one);
     }
     &[enabled = "no"][type = "default"] {
         background-color: var(--color-five);

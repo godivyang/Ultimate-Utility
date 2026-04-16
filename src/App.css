@@ -1,31 +1,31 @@
 :root {
     --color-one: #16db65;
-    --color-two: #04471c;
-    --color-three: #0d2818;
-    --color-four: #020202;
-    --color-five: #058c42;
+    --color-two: #058c42;
+    --color-three: #04471c;
+    --color-four: #0d2818;
+    --color-five: #020202;
     --color-two-transparent:rgba(5, 45, 15, 0.9);
     --color-three-transparent:rgba(10, 30, 15, 0.9);
 }
 
-.App {
-    .green-theme {
+html {
+    body.green-theme {
         --color-one: #16db65;
-        --color-two: #04471c;
-        --color-three: #0d2818;
-        --color-four: #020202;
-        --color-five: #058c42;
-        --color-two-transparent:rgba(5, 45, 15, 0.9);
-        --color-three-transparent:rgba(10, 30, 15, 0.9);
+        --color-two: #058c42;
+        --color-three: #04471c;
+        --color-four: #0d2818;
+        --color-five: #020202;
+        --color-two-transparent:rgba(5, 45, 15, .99);
+        --color-three-transparent:rgba(10, 30, 15, .99);
     }
-    .yellow-theme {
-        --color-one: #f4e409;
-        --color-two: #c36f09;
-        --color-three: #a63c06;
-        --color-four: #710000;
-        --color-five: #eeba0b;
-        --color-two-transparent:rgba(195, 111, 9, 0.9);
-        --color-three-transparent:rgba(166, 59, 6, 0.9);
+    body.yellow-theme {
+        --color-one: #34840d;
+        --color-two: #7fb335;
+        --color-three: #f3eff5;
+        --color-four: #9af8bb;
+        --color-five: #a8e6ac;
+        --color-two-transparent:rgba(195, 111, 9, .9);
+        --color-three-transparent:rgba(166, 59, 6, .9);
     }
 }
 

@@ -25,6 +25,35 @@ const FormInput = ({label="", change=()=>{}, type="text", autoComplete="off"}) =
     );
 };
 
+const setBackground = () => {
+    const height = window.screen.height,
+        width = window.screen.width;
+    let container = document.querySelector(".Background-Container") ||
+                    document.createElement("div");
+    container.innerHTML = "";
+    container.classList.add("Background-Container");
+    const side = Math.max(height, width), children = [];
+    for(let pos = 0; pos <= side; pos += 60) {
+        const square = document.createElement("div");
+        square.style.setProperty("--relative-side", side+"px");
+        square.style.setProperty("--relative-pos", pos+"px");
+        children.push(square);
+    }
+    for(let i = 0; i < children.length; i++) {
+        container.appendChild(children[i]);
+    }
+    let ind = children.length - 1;
+    const length = children.length, interval = setInterval(() => {
+        if(ind >= 0) {
+            children[ind--].classList.add("animation");
+        }
+    }, 50);
+    setTimeout(() => {
+        clearInterval(interval);
+    }, length * 250);
+    document.querySelector("body").appendChild(container);
+};
+
 const HomePage = ({showBusyIndicator}) => {
     const [theme, setTheme] = useState(themes[0]);
     const [currentPage, setCurrentPage] = useState();
@@ -34,19 +63,14 @@ const HomePage = ({showBusyIndicator}) => {
     const [loginModel, setLoginModel] = useState({ email: "", password: "" });
     const [signupModel, setSignupModel] = useState({ name: "", email: "", password: "", confPassword: "" });
 
-    const [loginFailed, setLoginFailed] = useState(false);
     const [waitingTime, setWaitingTime] = useState(0);
 
-    const address = "UltimateUtility-Login-Tries";
-    // const appName = "DIET_PLANNER";
-    // const appURL = process.env.REACT_APP_DIET_PLANNER_URL;
-
     useEffect(() => {
+        setBackground();
         const urlParams = new URLSearchParams(window.location.search);
         const redirect = urlParams.get("redirect");
 
-        let loginTriesFlag = localStorage.getItem(address),
-            timer, time = 0;
+        let timer, time = 0;
         
         timer = setInterval(() => {
             time++;
@@ -54,21 +78,18 @@ const HomePage = ({showBusyIndicator}) => {
         }, 1000);
         
         checkIfLogin().then((user) => {
-            // localStorage.removeItem(address);
             _afterUserAuthenticated(user);
             if(!redirect) {
                 moveTo("Main");
             }
         }).catch((e) => {
-            // console.log(error);
-            // localStorage.removeItem(address);
-            // setWaiting(false);
             setCurrentUser(null);
             moveTo("LogIn");
         }).then(() => {
             setWaitingTime(0);
             clearInterval(timer);
         });
+
     }, []);
 
     useEffect(() => {
@@ -78,9 +99,12 @@ const HomePage = ({showBusyIndicator}) => {
         if(alphas.length) {
             animationTimer = (setInterval(()=>{
                 alphas.forEach(alpha => {
-                    if(Math.random() * 10 > 7) {
-                        alpha.style.color = 
-                        alpha.style.color === "var(--color-one)" ? "transparent" : "var(--color-one)";
+                    if(Math.random() * 10 > 8) {
+                        if(alpha.classList.contains("Hovering")) {
+                            alpha.classList.remove("Hovering");
+                        } else {
+                            alpha.classList.add("Hovering");
+                        }
                     }
                 });
             }, 3000));
@@ -91,6 +115,10 @@ const HomePage = ({showBusyIndicator}) => {
             animationTimer && clearInterval(animationTimer);
         };
     }, [currentPage]);
+
+    useEffect(() => {
+        document.querySelector("body").classList = [theme.name];
+    }, [theme]);
 
     const _afterUserAuthenticated = (user, manualRedirect) => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -227,12 +255,16 @@ const HomePage = ({showBusyIndicator}) => {
             setWaitingTime(0);
             clearInterval(timer);
         });
-    }
+    };
+
+    const onAlphaMouseEnter = (e) => {
+        e.target.classList.add("Hovering");
+    };
 
     return (
         <>{waitingTime === 0 ?
         <div className={`HomePage-Container ${theme.name}`}>
-            <img src={`/${theme.name}.gif`} className="HomePage-Background"/>
+            {/* <img src={`/${theme.name}.gif`} className="HomePage-Background"/> */}
             <AnimatePresence mode="wait">
             {currentPage === "Main" && <motion.div 
                 key="Main"
@@ -255,11 +287,11 @@ const HomePage = ({showBusyIndicator}) => {
                 <div className="BigTitle">
                     <div className="BigWord">
                         {"ULTIMATE".split("").map((w, i) => 
-                        <div className="BigAlphabet" key={i}>{w}</div>)}
+                        <div className="BigAlphabet" key={i} onMouseEnter={onAlphaMouseEnter} onClick={onAlphaMouseEnter}>{w}</div>)}
                     </div> 
                     <div className="BigWord">
                         {"UTILITY".split("").map((w, i) => 
-                        <div className="BigAlphabet" key={i}>{w}</div>)}
+                        <div className="BigAlphabet" key={i} onMouseEnter={onAlphaMouseEnter} onClick={onAlphaMouseEnter}>{w}</div>)}
                     </div>
                 </div>
                 <div className="Description">
@@ -383,9 +415,6 @@ const HomePage = ({showBusyIndicator}) => {
                 </div>}
                 </span>
             </span>
-            {loginFailed &&
-            <Button press={refreshPage} text="Refresh"/>
-            }
         </div>
         </>}
         </>
